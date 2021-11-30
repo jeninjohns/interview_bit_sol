@@ -1,0 +1,22 @@
+class Solution:
+    # @param A : list of integers
+    # @return an integer
+    def solve(self, A):
+        length = len(A)
+        best_max = 0
+        maxes_backward = [0] * length
+        my_max = 0
+        for i in range(length - 1, -1, -1):
+            if A[i] > my_max:
+                my_max = A[i]
+            maxes_backward[i] = my_max
+        for i in range(1, length - 1):
+            if A[i] < maxes_backward[i+1] and 2 * A[i] - 1 + maxes_backward[i+1] > best_max:
+                best_first = -1
+                for j in range(i - 1, -1, -1):
+                    if A[j] > best_first and A[j] < A[i]:
+                        best_first = A[j]
+                cur_max = best_first + A[i] + maxes_backward[i+1]
+                if cur_max > best_max:
+                    best_max = cur_max
+        return best_max
